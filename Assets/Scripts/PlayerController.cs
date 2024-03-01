@@ -9,7 +9,7 @@ namespace SpeedJam4
 
         private bool _isCharging;
         private float _chargeForce;
-        private const float MaxChargeForce = 3f;
+        private const float MaxChargeForce = 2f;
 
         private void Awake()
         {
@@ -29,7 +29,7 @@ namespace SpeedJam4
             else
             {
                 _chargeForce = Mathf.Clamp(_chargeForce + Time.deltaTime, 0f, MaxChargeForce);
-                _lr.SetPositions(new[] { transform.position, _lr.transform.position + _lr.transform.forward * _chargeForce });
+                _lr.SetPositions(new[] { transform.position, _lr.transform.position + (_lr.transform.right * _chargeForce) });
             }
         }
 
@@ -38,6 +38,7 @@ namespace SpeedJam4
             if (value.phase == InputActionPhase.Started)
             {
                 _isCharging = true;
+                _chargeForce = 0f;
                 _lr.gameObject.SetActive(true);
             }
             else if (value.phase == InputActionPhase.Canceled)
