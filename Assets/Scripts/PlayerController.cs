@@ -13,8 +13,6 @@ namespace SpeedJam4
         private float _chargeForce;
         private const float MaxChargeForce = 2f;
 
-        private bool _didStart;
-
         private Vector2 _lastVel;
 
         private void Awake()
@@ -42,6 +40,12 @@ namespace SpeedJam4
 
         private void FixedUpdate()
         {
+            if (_rb.velocity.magnitude < .1f)
+            {
+                _rb.velocity = Vector2.zero;
+                TimeController.Instance.IsActive = false;
+            }
+
             _lastVel = _rb.velocity;
         }
 
@@ -52,23 +56,22 @@ namespace SpeedJam4
 
         public void OnFire(InputAction.CallbackContext value)
         {
-            if (value.phase == InputActionPhase.Started)
+            if (!TimeController.Instance.IsActive)
             {
-                _isCharging = true;
-                _chargeForce = 0f;
-                _lr.gameObject.SetActive(true);
-            }
-            else if (value.phase == InputActionPhase.Canceled)
-            {
-                if (!_didStart)
+                if (value.phase == InputActionPhase.Started)
                 {
-                    _didStart = true;
-                    TimeController.Instance.IsActive = true;
+                    _isCharging = true;
+                    _chargeForce = 0f;
+                    _lr.gameObject.SetActive(true);
                 }
+                else if (value.phase == InputActionPhase.Canceled)
+                {
+                    TimeController.Instance.IsActive = true;
 
-                _isCharging = false;
-                _lr.gameObject.SetActive(false);
-                _rb.velocity = -_lr.transform.right * _chargeForce * 10f;
+                    _isCharging = false;
+                    _lr.gameObject.SetActive(false);
+                    _rb.velocity = -_lr.transform.right * _chargeForce * 10f;
+                }
             }
         }
     }
