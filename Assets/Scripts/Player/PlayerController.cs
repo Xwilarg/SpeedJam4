@@ -81,6 +81,16 @@ namespace SpeedJam4.Player
             _rb.velocity = Vector2.Reflect(_lastVel, collision.contacts[0].normal) * _lastVel.magnitude / _info.WallBounceDamping;
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Enemy"))
+            {
+                Destroy(collision.transform.parent.gameObject);
+                _rb.velocity = Vector2.zero;
+                AllowFiring();
+            }
+        }
+
         public void OnFire(InputAction.CallbackContext value)
         {
             if (_reloadTimer <= 0f)
