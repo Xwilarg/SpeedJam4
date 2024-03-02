@@ -8,6 +8,7 @@ namespace SpeedJam4
     {
         private Rigidbody2D _rb;
         private LineRenderer _lr;
+        private SpriteRenderer _sr;
 
         private bool _isCharging;
         private float _chargeForce;
@@ -19,6 +20,8 @@ namespace SpeedJam4
         {
             _rb = GetComponent<Rigidbody2D>();
             _lr = GetComponentInChildren<LineRenderer>();
+            _sr = GetComponent<SpriteRenderer>();
+
             _lr.gameObject.SetActive(false);
         }
 
@@ -44,6 +47,7 @@ namespace SpeedJam4
             {
                 _rb.velocity = Vector2.zero;
                 TimeController.Instance.IsActive = false;
+                _sr.color = Color.white;
             }
 
             _lastVel = _rb.velocity;
@@ -67,6 +71,7 @@ namespace SpeedJam4
                 else if (value.phase == InputActionPhase.Canceled)
                 {
                     TimeController.Instance.IsActive = true;
+                    _sr.color = Color.gray;
 
                     _isCharging = false;
                     _lr.gameObject.SetActive(false);
