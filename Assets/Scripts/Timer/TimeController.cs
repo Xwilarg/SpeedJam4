@@ -9,77 +9,35 @@ namespace SpeedJam4.Timers
     {
         public static TimeController Instance { get; private set; }
 
-        bool timerActive;
+        [SerializeField] private TMP_Text _text;
 
-        float timeInMilliseconds;
-        float timeInSeconds;
-        float timeInMinutes;
+        public bool IsActive { set; get; }
+        private float _timer;
 
-        string milliseconds = "00";
-        string seconds = "00";
-        string minutes = "00";
-
-        [SerializeField] private TMP_Text timeText;
-
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
             Instance = this;
-
-            timerActive = false;
-
-            timeInMilliseconds = 0;
-            timeInSeconds = 0;
-            timeInMinutes = 0;
-
-            timeText.text = "00 : 00 : 00";
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            if (!timerActive)
-                return;
-
-            timeInMilliseconds += (Time.deltaTime * 1000)/10;
-            
-            if(timeInMilliseconds >= 100)
+            if (IsActive)
             {
-                timeInMilliseconds = 0;
-                timeInSeconds++;
-                if(timeInSeconds >= 60)
-                {
-                    timeInSeconds = 0;
-                    timeInMinutes += 1;
-                }    
+                _timer += Time.deltaTime;
+                UpdateUI();
             }
-
-            milliseconds = timeInMilliseconds < 10 ? "0" + ((int)timeInMilliseconds).ToString() : ((int)timeInMilliseconds).ToString();
-            seconds = timeInSeconds < 10 ? "0" + timeInSeconds.ToString() :  timeInSeconds.ToString();
-            minutes = timeInMinutes < 10 ? "0" + timeInMinutes.ToString() : timeInMinutes.ToString();
-
-
-
-            timeText.text = minutes + " : " + seconds + " : " + milliseconds;
-
-
         }
 
-        public void EnableTimer()
+        private void UpdateUI()
         {
-            timerActive = true;
-        }
-
-        public void DisableTimer()
-        {
-            timerActive = false;
+            _text.text = $"{_timer / 60}:{_timer % 60:00}";
         }
 
         public void ResetTimer()
         {
-            timeInMilliseconds = 0;
-            timeInSeconds = 0;
-            timeInMinutes = 0;
+            IsActive = false;
+            _timer = 0f;
+            UpdateUI();
         }
     }
 }
