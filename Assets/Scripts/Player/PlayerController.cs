@@ -1,5 +1,6 @@
 using SpeedJam4.SO;
 using SpeedJam4.Timer;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,8 @@ namespace SpeedJam4.Player
         private float _chargeForce;
 
         private Vector2 _lastVel;
+
+        private bool _canShoot = true;
 
         private void Awake()
         {
@@ -52,7 +55,6 @@ namespace SpeedJam4.Player
             {
                 _rb.velocity = Vector2.zero;
                 TimeController.Instance.IsActive = false;
-                _sr.color = Color.white;
             }
 
             _lastVel = _rb.velocity;
@@ -63,15 +65,29 @@ namespace SpeedJam4.Player
             _rb.velocity = Vector2.Reflect(_lastVel, collision.contacts[0].normal) * _lastVel.magnitude / _info.WallBounceDamping;
         }
 
+        private IEnumerator Reload()
+        {
+            _canShoot = false;
+
+            yield return new WaitForSeconds(_info.ReloadTime);
+
+            _canShoot = true;
+            _sr.color = Color.white;
+        }
+
         public void OnFire(InputAction.CallbackContext value)
         {
-            if (!TimeController.Instance.IsActive)
+            if (_canShoot)
             {
                 if (value.phase == InputActionPhase.Started)
                 {
                     _isCharging = true;
                     _chargeForce = 0f;
                     _lr.gameObject.SetActive(true);
+
+                    _rb.velocity = Vector2.zero;
+
+                    TimeController.Instance.IsActive = false;
                 }
                 else if (value.phase == InputActionPhase.Canceled)
                 {
@@ -80,7 +96,9 @@ namespace SpeedJam4.Player
 
                     _isCharging = false;
                     _lr.gameObject.SetActive(false);
-                    _rb.velocity = -_lr.transform.right * _chargeForce * _info.PropulsionVelMultiplier;
+                    _rb.velocity = _chargeForce * _info.PropulsionVelMultiplier * -_lr.transform.right;
+
+                    StartCoroutine(Reload());
                 }
             }
         }

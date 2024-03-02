@@ -9,5 +9,6 @@ namespace SpeedJam4.SO
         [Tooltip("Multiplier added to the propulsion force when firing")] public float PropulsionVelMultiplier = 10f;
         [Tooltip("Speed reduction when hitting a wall, it is too low it'll increase it instead")] public float WallBounceDamping = 10f;
         [Tooltip("Velocity under which we just stop the player and wait for next shoot")] public float MinVelocity = .1f;
+        [Tooltip("Firing reload time in seconds")] public float ReloadTime = 2f;
     }
 }

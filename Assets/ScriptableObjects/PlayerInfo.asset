@@ -16,3 +16,4 @@ MonoBehaviour:
   PropulsionVelMultiplier: 10
   WallBounceDamping: 10
   MinVelocity: 0.1
+  ReloadTime: 1
