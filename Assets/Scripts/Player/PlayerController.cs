@@ -22,7 +22,7 @@ namespace SpeedJam4.Player
 
         private Vector2 _lastVel;
 
-        private bool _canShoot = true;
+        private float _reloadTimer;
 
         private void Awake()
         {
@@ -47,6 +47,21 @@ namespace SpeedJam4.Player
                 _chargeForce = Mathf.Clamp(_chargeForce + Time.deltaTime, 0f, _info.MaxChargeForce);
                 _lr.SetPositions(new[] { transform.position, _lr.transform.position + (_lr.transform.right * _chargeForce) });
             }
+
+            if (_reloadTimer > 0f)
+            {
+                _reloadTimer -= Time.deltaTime;
+                if (_reloadTimer <= 0f)
+                {
+                    AllowFiring();
+                }
+            }
+        }
+
+        private void AllowFiring()
+        {
+            _reloadTimer = 0f;
+            _sr.color = Color.white;
         }
 
         private void FixedUpdate()
@@ -55,6 +70,7 @@ namespace SpeedJam4.Player
             {
                 _rb.velocity = Vector2.zero;
                 TimeController.Instance.IsActive = false;
+                AllowFiring();
             }
 
             _lastVel = _rb.velocity;
@@ -65,19 +81,9 @@ namespace SpeedJam4.Player
             _rb.velocity = Vector2.Reflect(_lastVel, collision.contacts[0].normal) * _lastVel.magnitude / _info.WallBounceDamping;
         }
 
-        private IEnumerator Reload()
-        {
-            _canShoot = false;
-
-            yield return new WaitForSeconds(_info.ReloadTime);
-
-            _canShoot = true;
-            _sr.color = Color.white;
-        }
-
         public void OnFire(InputAction.CallbackContext value)
         {
-            if (_canShoot)
+            if (_reloadTimer <= 0f)
             {
                 if (value.phase == InputActionPhase.Started)
                 {
@@ -98,7 +104,7 @@ namespace SpeedJam4.Player
                     _lr.gameObject.SetActive(false);
                     _rb.velocity = _chargeForce * _info.PropulsionVelMultiplier * -_lr.transform.right;
 
-                    StartCoroutine(Reload());
+                    _reloadTimer = _info.ReloadTime;
                 }
             }
         }
