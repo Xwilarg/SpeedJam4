@@ -1,8 +1,8 @@
-using SpeedJam4.Timers;
+using SpeedJam4.Timer;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace SpeedJam4
+namespace SpeedJam4.Player
 {
     public class PlayerController : MonoBehaviour
     {

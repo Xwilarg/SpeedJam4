@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace SpeedJam4.Timers
+namespace SpeedJam4.Timer
 {
     public class TimeController : MonoBehaviour
     {
