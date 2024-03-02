@@ -30,14 +30,12 @@ namespace SpeedJam4.Player
 
         private void Update()
         {
-            if (!_isCharging)
-            {
-                Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 direction = (mouse - (Vector2)transform.position).normalized;
-                _lr.transform.position = transform.position + (Vector3)direction;
-                _lr.transform.right = direction;
-            }
-            else
+            Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = (mouse - (Vector2)transform.position).normalized;
+            _lr.transform.position = transform.position + (Vector3)direction;
+            _lr.transform.right = direction;
+
+            if (_isCharging)
             {
                 _chargeForce = Mathf.Clamp(_chargeForce + Time.deltaTime, 0f, _info.MaxChargeForce);
                 _lr.SetPositions(new[] { transform.position, _lr.transform.position + (_lr.transform.right * _chargeForce) });
