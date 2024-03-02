@@ -5,6 +5,7 @@ namespace SpeedJam4
 {
     public class PlayerController : MonoBehaviour
     {
+        private Rigidbody2D _rb;
         private LineRenderer _lr;
 
         private bool _isCharging;
@@ -13,6 +14,7 @@ namespace SpeedJam4
 
         private void Awake()
         {
+            _rb = GetComponent<Rigidbody2D>();
             _lr = GetComponentInChildren<LineRenderer>();
             _lr.gameObject.SetActive(false);
         }
@@ -45,6 +47,7 @@ namespace SpeedJam4
             {
                 _isCharging = false;
                 _lr.gameObject.SetActive(false);
+                _rb.velocity = -_lr.transform.right * _chargeForce * 10f;
             }
         }
     }
