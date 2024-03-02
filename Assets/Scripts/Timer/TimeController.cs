@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -30,7 +28,8 @@ namespace SpeedJam4.Timers
 
         private void UpdateUI()
         {
-            _text.text = $"{_timer / 60}:{_timer % 60:00}";
+            var s = (int)_timer;
+            _text.text = $"{s / 60}:{s % 60:00}";
         }
 
         public void ResetTimer()

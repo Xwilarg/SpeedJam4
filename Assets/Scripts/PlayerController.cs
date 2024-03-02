@@ -1,3 +1,4 @@
+using SpeedJam4.Timers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,8 @@ namespace SpeedJam4
         private bool _isCharging;
         private float _chargeForce;
         private const float MaxChargeForce = 2f;
+
+        private bool _didStart;
 
         private void Awake()
         {
@@ -45,6 +48,12 @@ namespace SpeedJam4
             }
             else if (value.phase == InputActionPhase.Canceled)
             {
+                if (!_didStart)
+                {
+                    _didStart = true;
+                    TimeController.Instance.IsActive = true;
+                }
+
                 _isCharging = false;
                 _lr.gameObject.SetActive(false);
                 _rb.velocity = -_lr.transform.right * _chargeForce * 10f;
