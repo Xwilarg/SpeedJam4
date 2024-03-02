@@ -15,6 +15,8 @@ namespace SpeedJam4
 
         private bool _didStart;
 
+        private Vector2 _lastVel;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
@@ -22,7 +24,7 @@ namespace SpeedJam4
             _lr.gameObject.SetActive(false);
         }
 
-         private void Update()
+        private void Update()
         {
             if (!_isCharging)
             {
@@ -36,6 +38,16 @@ namespace SpeedJam4
                 _chargeForce = Mathf.Clamp(_chargeForce + Time.deltaTime, 0f, MaxChargeForce);
                 _lr.SetPositions(new[] { transform.position, _lr.transform.position + (_lr.transform.right * _chargeForce) });
             }
+        }
+
+        private void FixedUpdate()
+        {
+            _lastVel = _rb.velocity;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            _rb.velocity = Vector2.Reflect(_lastVel, collision.contacts[0].normal) * _lastVel.magnitude / 10f;
         }
 
         public void OnFire(InputAction.CallbackContext value)
