@@ -7,6 +7,8 @@ namespace SpeedJam4.Player
 {
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Instance { private set; get; }
+
         [SerializeField]
         private PlayerInfo _info;
 
@@ -21,9 +23,11 @@ namespace SpeedJam4.Player
 
         private void Awake()
         {
+            Instance = this;
+
             _rb = GetComponent<Rigidbody2D>();
             _lr = GetComponentInChildren<LineRenderer>();
-            _sr = GetComponent<SpriteRenderer>();
+            _sr = GetComponentInChildren<SpriteRenderer>();
 
             _lr.gameObject.SetActive(false);
         }
