@@ -88,14 +88,13 @@ namespace SpeedJam4.Player
                 if (value.phase == InputActionPhase.Started)
                 {
                     _isCharging = true;
-                    _chargeForce = 0f;
                     _lr.gameObject.SetActive(true);
 
                     _rb.velocity = Vector2.zero;
 
                     TimeController.Instance.IsActive = false;
                 }
-                else if (value.phase == InputActionPhase.Canceled)
+                else if (value.phase == InputActionPhase.Canceled && _chargeForce > 0f)
                 {
                     TimeController.Instance.IsActive = true;
                     _sr.color = Color.gray;
@@ -105,6 +104,7 @@ namespace SpeedJam4.Player
                     _rb.velocity = _chargeForce * _info.PropulsionVelMultiplier * -_lr.transform.right;
 
                     _reloadTimer = _info.ReloadTime;
+                    _chargeForce = 0f;
                 }
             }
         }
