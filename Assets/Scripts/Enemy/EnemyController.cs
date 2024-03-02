@@ -9,6 +9,7 @@ namespace SpeedJam4.Enemy
         private const float SpeedMultiplier = 2f;
         private const float Range = 2f;
         private const float AttackDist = 2f;
+        private const float AttackWaitTime = 1f;
 
         [SerializeField]
         private GameObject _hint;
@@ -43,6 +44,7 @@ namespace SpeedJam4.Enemy
                 {
                     _attackState = 0;
                     Destroy(_hintInstance);
+                    _hintInstance = null;
                 }
             }
         }
@@ -54,8 +56,11 @@ namespace SpeedJam4.Enemy
                 if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) <= AttackDist)
                 {
                     _attackState = 1;
-                    _hintInstance = Instantiate(_hint, transform.up * Range, Quaternion.identity);
+                    _hintInstance = Instantiate(_hint, transform.position + ((Vector3)_lastDir * Range), Quaternion.identity);
                     _hintInstance.transform.localScale = Vector3.one;
+                    _timer = AttackWaitTime;
+                    _rb.velocity = Vector2.zero;
+                    _anim.SetBool("IsMoving", false);
                 }
                 else
                 {
@@ -73,6 +78,14 @@ namespace SpeedJam4.Enemy
             {
                 _rb.velocity = Vector2.zero;
                 _anim.SetBool("IsMoving", false);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_hintInstance != null)
+            {
+                Destroy(_hintInstance);
             }
         }
     }
