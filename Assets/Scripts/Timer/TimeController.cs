@@ -28,7 +28,7 @@ namespace SpeedJam4.Timer
 
         private void UpdateUI()
         {
-            _text.text = $"{(int)_timer / 60}:{_timer % 60:00}.{(int)(_timer % 1 * 1000f):000}";
+            _text.text = $"{(int)_timer / 60:00} : {_timer % 60:00} : {(int)((_timer % 1 * 1000f)/10):00}";
         }
 
         public void ResetTimer()
@@ -36,6 +36,11 @@ namespace SpeedJam4.Timer
             IsActive = false;
             _timer = 0f;
             UpdateUI();
+        }
+
+        public void ToggleTimerActive()
+        {
+            IsActive = !IsActive;
         }
     }
 }
