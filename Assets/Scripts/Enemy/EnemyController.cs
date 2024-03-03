@@ -58,10 +58,9 @@ namespace SpeedJam4.Enemy
 
         private void FixedUpdate()
         {
-            if (TimeController.Instance.IsActive && _attackState == 0 && PlayerController.Instance != null)
+            if (TimeController.Instance.IsActive && _attackState == 0 && PlayerController.Instance != null && Physics2D.Linecast(transform.position, PlayerController.Instance.transform.position, 1 << LayerMask.NameToLayer("Map")).collider == null)
             {
-                if (Physics2D.Linecast(transform.position, PlayerController.Instance.transform.position, 1 << LayerMask.NameToLayer("Map")).collider == null // Somehow doesn't work
-                    && Vector2.Distance(transform.position, PlayerController.Instance.transform.position) <= AttackDist)
+                if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) <= AttackDist)
                 {
                     _attackState = 1;
                     _hintInstance = Instantiate(_hint, transform.position + ((Vector3)_lastDir * Range), Quaternion.identity);
