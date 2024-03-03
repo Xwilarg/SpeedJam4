@@ -1,6 +1,5 @@
 using SpeedJam4.SO;
 using SpeedJam4.Timer;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +11,9 @@ namespace SpeedJam4.Player
 
         [SerializeField]
         private PlayerInfo _info;
+
+        [SerializeField]
+        private GameObject _gameOver;
 
         private Rigidbody2D _rb;
         private LineRenderer _lr;
@@ -66,7 +68,7 @@ namespace SpeedJam4.Player
 
         public void Die()
         {
-            // Show gameover UI
+            _gameOver.SetActive(true);
             Instance = null;
             Destroy(gameObject);
         }
