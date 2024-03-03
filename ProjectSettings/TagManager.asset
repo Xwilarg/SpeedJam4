@@ -42,6 +42,12 @@ TagManager:
   - name: VFX
     uniqueID: 2623596691
     locked: 0
+  - name: Floor
+    uniqueID: 4133134415
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Walls
+    uniqueID: 1097939955
     locked: 0
