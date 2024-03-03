@@ -68,6 +68,7 @@ namespace SpeedJam4.Player
 
         public void Die()
         {
+            TimeController.Instance.IsActive = false;
             _gameOver.SetActive(true);
             Instance = null;
             Destroy(gameObject);
@@ -87,16 +88,15 @@ namespace SpeedJam4.Player
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            _rb.velocity = Vector2.Reflect(_lastVel, collision.contacts[0].normal) * _lastVel.magnitude / _info.WallBounceDamping;
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Enemy"))
+            if (collision.collider.CompareTag("Enemy"))
             {
-                Destroy(collision.transform.parent.gameObject);
+                Destroy(collision.collider.transform.parent.gameObject);
                 _rb.velocity = Vector2.zero;
                 AllowFiring();
+            }
+            else
+            {
+                _rb.velocity = Vector2.Reflect(_lastVel, collision.contacts[0].normal) * _lastVel.magnitude / _info.WallBounceDamping;
             }
         }
 
