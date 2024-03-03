@@ -28,8 +28,7 @@ namespace SpeedJam4.Timer
 
         private void UpdateUI()
         {
-            var s = (int)_timer;
-            _text.text = $"{s / 60}:{s % 60:00}";
+            _text.text = $"{(int)_timer / 60}:{_timer % 60:00}.{(int)(_timer % 1 * 1000f):000}";
         }
 
         public void ResetTimer()
