@@ -342,7 +342,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1367688612
 RectTransform:
   m_ObjectHideFlags: 0
@@ -408,8 +408,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1920448222}
-        m_TargetAssemblyTypeName: SpeedJam4.Timers.TimeController, Assembly-CSharp
-        m_MethodName: EnableTimer
+        m_TargetAssemblyTypeName: SpeedJam4.Timer.TimeController, Assembly-CSharp
+        m_MethodName: ToggleTimerActive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -757,7 +757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7a01b3b003bc24e9080a62b1b87339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeText: {fileID: 2015494860}
+  _text: {fileID: 2015494860}
 --- !u!114 &1920448223
 MonoBehaviour:
   m_ObjectHideFlags: 0
