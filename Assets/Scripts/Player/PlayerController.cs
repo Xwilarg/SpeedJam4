@@ -64,6 +64,13 @@ namespace SpeedJam4.Player
             _sr.color = Color.white;
         }
 
+        public void Die()
+        {
+            // Show gameover UI
+            Instance = null;
+            Destroy(gameObject);
+        }
+
         private void FixedUpdate()
         {
             if (_rb.velocity.magnitude < _info.MinVelocity)

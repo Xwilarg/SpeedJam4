@@ -42,6 +42,13 @@ namespace SpeedJam4.Enemy
                 _timer -= Time.deltaTime;
                 if (_timer <= 0f)
                 {
+                    var coll = new Collider2D[1];
+                    Physics2D.OverlapCircleNonAlloc(transform.position + ((Vector3)_lastDir * Range), Range, coll, 1 << LayerMask.NameToLayer("Player"));
+                    if (coll[0] != null)
+                    {
+                        coll[0].transform.parent.GetComponent<PlayerController>().Die();
+                    }
+
                     _attackState = 0;
                     Destroy(_hintInstance);
                     _hintInstance = null;
@@ -51,13 +58,13 @@ namespace SpeedJam4.Enemy
 
         private void FixedUpdate()
         {
-            if (TimeController.Instance.IsActive && _attackState == 0)
+            if (TimeController.Instance.IsActive && _attackState == 0 && PlayerController.Instance != null)
             {
                 if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) <= AttackDist)
                 {
                     _attackState = 1;
                     _hintInstance = Instantiate(_hint, transform.position + ((Vector3)_lastDir * Range), Quaternion.identity);
-                    _hintInstance.transform.localScale = Vector3.one;
+                    _hintInstance.transform.localScale = Vector3.one * Range;
                     _timer = AttackWaitTime;
                     _rb.velocity = Vector2.zero;
                     _anim.SetBool("IsMoving", false);
